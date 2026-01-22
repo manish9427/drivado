@@ -2,7 +2,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import type { TicketsResponse } from "@/lib/validation/ticket";
 
 export function useInfiniteTickets(params: { search?: string; status?: string; sort?: "asc" | "desc" }) {
-  return useInfiniteQuery<TicketsResponse>({
+  return useInfiniteQuery<TicketsResponse, Error, { pages: TicketsResponse[] }>({
     queryKey: ["tickets", params],
     queryFn: async ({ pageParam = 1 }) => {
       const query = new URLSearchParams({
