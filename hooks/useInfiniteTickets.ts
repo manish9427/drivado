@@ -1,8 +1,14 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import type { TicketsResponse } from "@/lib/validation/ticket";
+import type { Ticket, TicketsResponse } from "@/lib/validation/ticket";
 
-export function useInfiniteTickets(params: { search?: string; status?: string; sort?: "asc" | "desc" }) {
-  return useInfiniteQuery<TicketsResponse, Error, { pages: TicketsResponse[] }>({
+type Params = {
+  search?: string;
+  status?: string;
+  sort?: "asc" | "desc";
+};
+
+export function useInfiniteTickets(params: Params) {
+  return useInfiniteQuery<TicketsResponse, Error>({
     queryKey: ["tickets", params],
     queryFn: async ({ pageParam = 1 }) => {
       const query = new URLSearchParams({
@@ -14,6 +20,7 @@ export function useInfiniteTickets(params: { search?: string; status?: string; s
 
       const res = await fetch(`/api/tickets?${query}`);
       if (!res.ok) throw new Error("Failed to fetch tickets");
+
       return (await res.json()) as TicketsResponse;
     },
     getNextPageParam: (lastPage) => lastPage.nextPage ?? undefined,
