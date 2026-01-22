@@ -26,3 +26,9 @@ export type Ticket = {
   updatedAt: string;
   assignee?: string;
 };
+
+// 👇 Separate type for API response
+export type TicketsResponse = {
+  data: Ticket[];
+  nextPage: number | null;
+};
