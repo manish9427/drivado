@@ -1,7 +1,8 @@
+import { NextRequest } from "next/server";
 import { connectDB } from "@/lib/db";
 import { Ticket } from "@/models/Ticket";
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   await connectDB();
 
   const { searchParams } = new URL(req.url);
@@ -38,7 +39,7 @@ export async function GET(req: Request) {
   });
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   await connectDB();
   const body = await req.json();
 
