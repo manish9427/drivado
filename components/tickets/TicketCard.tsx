@@ -32,7 +32,12 @@ export function TicketCard({ ticket }: { ticket: Ticket }) {
 
       <div className="mt-3 flex items-center justify-between text-[11px] text-gray-500">
         <span>Priority {ticket.priority}</span>
-        <span>{format(new Date(ticket.createdAt), "MMM d, yyyy")}</span>
+        {/* 👇 Safe date formatting */}
+        <span>
+          {ticket.createdAt
+            ? format(new Date(ticket.createdAt), "MMM d, yyyy")
+            : "—"}
+        </span>
       </div>
 
       {ticket.assignee && (

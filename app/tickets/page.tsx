@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRef, useState, useEffect } from "react";
 import { useScroll } from "framer-motion";
 import { useInfiniteTickets } from "@/hooks/useInfiniteTickets";
@@ -65,6 +66,9 @@ export default function TicketsPage() {
             {tickets.length} tickets loaded
           </p>
         </div>
+              <Link href="/tickets/new" className="rounded bg-black px-3 py-1.5 text-xs font-medium text-white hover:bg-gray-800" >
+          + New Ticket
+        </Link>
       </div>
 
       <HeaderControls
