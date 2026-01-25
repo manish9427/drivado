@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, type InfiniteData } from "@tanstack/react-query";
 import type { Ticket, TicketsResponse } from "@/lib/validation/ticket";
 
 type Params = {
@@ -8,7 +8,7 @@ type Params = {
 };
 
 export function useInfiniteTickets(params: Params) {
-  return useInfiniteQuery<TicketsResponse, Error>({
+  return useInfiniteQuery<TicketsResponse, Error, InfiniteData<TicketsResponse>, (string | Params)[], number>({
     queryKey: ["tickets", params],
     queryFn: async ({ pageParam = 1 }) => {
       const query = new URLSearchParams({
@@ -24,5 +24,6 @@ export function useInfiniteTickets(params: Params) {
       return (await res.json()) as TicketsResponse;
     },
     getNextPageParam: (lastPage) => lastPage.nextPage ?? undefined,
+    initialPageParam: 1,
   });
 }

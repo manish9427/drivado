@@ -2,7 +2,7 @@ import { NextRequest } from "next/server";
 import { connectDB } from "@/lib/db";
 import { Ticket } from "@/models/Ticket";
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   await connectDB();
   const resolvedParams = await params;
   const ticket = await Ticket.findById(resolvedParams.id);
@@ -20,10 +20,11 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   });
 }
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   await connectDB();
   const body = await req.json();
-  const ticket = await Ticket.findByIdAndUpdate(params.id, body, { new: true });
+  const resolvedParams = await params;
+  const ticket = await Ticket.findByIdAndUpdate(resolvedParams.id, body, { new: true });
   if (!ticket) return new Response("Not found", { status: 404 });
 
   return Response.json({
@@ -38,8 +39,9 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   });
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   await connectDB();
-  await Ticket.findByIdAndDelete(params.id);
+  const resolvedParams = await params;
+  await Ticket.findByIdAndDelete(resolvedParams.id);
   return Response.json({ success: true });
 }
